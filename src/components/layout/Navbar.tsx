@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Menu, X, Trophy } from "lucide-react";
+import { Menu, X, Trophy, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
  const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +26,15 @@ export default function Navbar() {
  <Button asChild className="h-10 px-6 hidden sm:inline-flex">
  <a href="#register">Register</a>
  </Button>
+ {/* Admin login — subtle ghost button with lock icon */}
+ <Link
+  to="/admin/login"
+  className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring px-1 py-1"
+  title="Admin login"
+ >
+  <ShieldCheck className="h-3.5 w-3.5" />
+  Admin
+ </Link>
  <ThemeToggle />
  </nav>
 
@@ -52,6 +62,15 @@ export default function Navbar() {
  <Button asChild className="w-full h-12">
  <a href="#register" onClick={() => setIsOpen(false)}>Register Team</a>
  </Button>
+ {/* Admin login for mobile */}
+ <Link
+  to="/admin/login"
+  onClick={() => setIsOpen(false)}
+  className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors border-t pt-4"
+ >
+  <ShieldCheck className="h-3.5 w-3.5" />
+  Admin Login
+ </Link>
  </div>
  )}
  </header>
