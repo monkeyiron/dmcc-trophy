@@ -32,11 +32,11 @@ export default function Footer() {
  </div>
  </div>
  
- <div className="py-6 border-t text-center text-xs text-muted-foreground">
- <p className="text-[10px] md:text-xs">
- Built with deep passion by the Meetei Club South X &copy; 2026
- </p>
- </div>
+  <div className="py-6 border-t text-center text-xs text-muted-foreground">
+  <p className="text-[10px] md:text-xs">
+  Brewed with coffee &amp; creativity &mdash; Meetei Club South X Team &copy; 2026
+  </p>
+  </div>
  </footer>
  );
 }

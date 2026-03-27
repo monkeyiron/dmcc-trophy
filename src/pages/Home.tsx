@@ -54,7 +54,7 @@ export default function Home() {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">Chukhattpa</span>
               </h1>
               <p className="hero-title text-xl md:text-2xl font-semibold text-muted-foreground tracking-wide uppercase">
-                3rd Annual Sports Meet
+                3rd Annual Sports Meet <span className="mx-2 text-primary/50">•</span> Organized by DMCC
               </p>
             </div>
 
@@ -76,39 +76,35 @@ export default function Home() {
               </Button>
             </div>
 
-            {/* Event Dashboard Cards */}
-            <div className="hero-info grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg pt-6 md:pt-8 mt-2 border-t border-border/50">
+            {/* Event Dashboard Cards — Avant-Garde Bento */}
+            <div className="hero-info flex flex-col sm:flex-row w-full max-w-lg mt-8 md:mt-10 border border-border divide-y sm:divide-y-0 sm:divide-x divide-border bg-background/50 backdrop-blur-sm shadow-xl shadow-black/5">
               
-              {/* Date Card */}
-              <div className="flex flex-col p-4 rounded-none bg-muted/30 border shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="p-2 bg-background rounded-none shadow-sm border">
-                    <Calendar className="w-4 h-4 text-muted-foreground" />
-                  </div>
-                  <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">When</span>
-                </div>
-                <div className="text-sm font-bold text-foreground">29 MARCH 2026</div>
-                <div className="text-xs font-medium text-muted-foreground mt-0.5">8:30 AM (SUNDAY)</div>
+              {/* Date Block */}
+              <div className="group flex-1 flex flex-col p-5 bg-background hover:bg-muted/30 transition-colors">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-3 flex items-center gap-2">
+                  <Calendar className="w-3.5 h-3.5 text-primary" /> Date & Time
+                </p>
+                <p className="font-heading font-black text-2xl uppercase tracking-tight text-foreground">29 Mar 26</p>
+                <p className="text-xs font-semibold text-muted-foreground mt-1">08:30 AM (SUNDAY)</p>
               </div>
 
-              {/* Location Card */}
+              {/* Location Block */}
               <a 
                 href="https://maps.app.goo.gl/6Su6sR1ntmqavd8g6" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="group flex flex-col p-4 rounded-none bg-background border border-primary/20 shadow-md shadow-primary/5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 relative overflow-hidden"
+                className="group flex-1 flex flex-col p-5 bg-background hover:bg-muted/30 transition-colors relative overflow-hidden cursor-pointer"
               >
-                <div className="absolute top-4 right-4 bg-primary/10 text-primary p-1.5 rounded-none opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300">
-                  <ArrowRight className="w-3 h-3" />
+                <div className="absolute top-5 right-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                  <ArrowRight className="w-4 h-4 text-primary" />
                 </div>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="p-2 bg-primary/10 rounded-none">
-                    <MapPin className="w-4 h-4 text-primary" />
-                  </div>
-                  <span className="text-xs font-black uppercase tracking-widest text-primary">Where</span>
-                </div>
-                <div className="text-sm font-bold text-foreground">Bhaskaracharya College</div>
-                <div className="text-xs font-medium text-muted-foreground mt-0.5">Sector 2, Dwarka <span className="inline-block ml-1 opacity-70 group-hover:opacity-100 transition-opacity">— View Map</span></div>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-3 flex items-center gap-2">
+                  <MapPin className="w-3.5 h-3.5 text-primary" /> Venue
+                </p>
+                <p className="font-heading font-black text-2xl uppercase tracking-tight text-foreground">Dwarka</p>
+                <p className="text-xs font-semibold text-muted-foreground mt-1 group-hover:text-primary transition-colors">
+                  Navigate to Venue
+                </p>
               </a>
             </div>
 
