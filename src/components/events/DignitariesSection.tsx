@@ -1,5 +1,6 @@
 import DignitaryCard from "./DignitaryCard";
 import { Users } from "lucide-react";
+import { motion } from "framer-motion";
 
 const dignitaries = [
   {
@@ -34,35 +35,58 @@ const dignitaries = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { type: "spring" as const, bounce: 0.4 } }
+};
+
 export default function DignitariesSection() {
   return (
-    <div className="container mx-auto py-24 px-4 md:px-6 relative overflow-hidden">
+    <div className="container mx-auto py-12 md:py-24 px-4 md:px-6 relative overflow-hidden">
       
-      {/* Background glow */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="mb-16 text-center flex flex-col items-center relative z-10">
-        <div className="inline-flex items-center justify-center p-4 mb-6 rounded-2xl bg-white/5 border border-white/10 shadow-glow-primary rotate-3">
-          <Users className="w-8 h-8 text-primary -rotate-3" />
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.7 }}
+        className="mb-8 md:mb-16 text-center flex flex-col items-center relative z-10"
+      >
+        <div className="inline-flex items-center justify-center p-4 mb-6 bg-muted border">
+          <Users className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="font-heading font-black text-4xl md:text-5xl tracking-tight text-foreground uppercase text-glow">
+        <h2 className="font-heading font-extrabold text-4xl md:text-5xl tracking-tight text-foreground uppercase">
           Honoured Guests
         </h2>
         <p className="text-muted-foreground mt-6 max-w-2xl text-lg font-medium leading-relaxed">
           We are privileged to host distinguished leaders and community figures.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10"
+      >
         {dignitaries.map((dig) => (
-          <DignitaryCard
-            key={dig.name}
-            name={dig.name}
-            role={dig.role}
-            title={dig.title}
-          />
+          <motion.div variants={itemVariants} key={dig.name} className="h-full">
+            <DignitaryCard
+              name={dig.name}
+              role={dig.role}
+              title={dig.title}
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }
