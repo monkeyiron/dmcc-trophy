@@ -1,91 +1,143 @@
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Trophy, Calendar, MapPin } from "lucide-react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { motion } from "framer-motion";
 
 export default function Home() {
+  const container = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // Respect user's motion preference
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      // Set all elements to their final visible state immediately
+      gsap.set([".hero-badge", ".hero-title", ".hero-desc", ".hero-info", ".hero-buttons", ".hero-image"], {
+        opacity: 1, y: 0, scale: 1,
+      });
+      return;
+    }
+
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    // Choreograph the hero load timeline
+    tl.from(".hero-badge", { y: 20, opacity: 0, duration: 0.8, delay: 0.2 })
+      .from(".hero-title", { y: 40, opacity: 0, duration: 1, stagger: 0.2 }, "-=0.6")
+      .from(".hero-desc", { y: 20, opacity: 0, duration: 0.8 }, "-=0.6")
+      .from(".hero-info", { y: 20, opacity: 0, duration: 0.8 }, "-=0.6")
+      .from(".hero-buttons", { y: 20, opacity: 0, duration: 0.8 }, "-=0.6")
+      .from(".hero-image", { scale: 0.98, opacity: 0, duration: 1.5, ease: "power2.out" }, "-=1.0");
+  }, { scope: container });
+
   return (
-    <div className="flex flex-col">
-      <section id="home" className="relative flex min-h-[90vh] w-full flex-col items-center justify-center overflow-hidden bg-background pt-20 pb-12">
-        
-        {/* Modern Ambient Background - Subtle Mesh Gradients */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[10%] left-[20%] h-[30rem] w-[30rem] rounded-full bg-primary/10 blur-[120px]" />
-          <div className="absolute bottom-[20%] right-[10%] h-[40rem] w-[40rem] rounded-full bg-accent/10 blur-[150px]" />
-          
-          {/* Subtle Grid Pattern Overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30" />
-        </div>
+    <div className="flex flex-col" ref={container}>
+      <section id="home" className="relative flex min-h-[70vh] md:min-h-[90vh] w-full flex-col items-center justify-center overflow-hidden bg-background pt-12 pb-8 md:pt-20 md:pb-12">
+        {/* Subtle Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30" />
 
         {/* Hero Content */}
-        <div className="container relative z-10 mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center justify-between gap-12 mt-8 lg:mt-0">
+        <div className="container relative z-10 mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 mt-4 lg:mt-0">
+        
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-5 md:space-y-8 max-w-2xl">
           
-          <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-8 max-w-2xl">
-            
             {/* Tagline Badge */}
-            <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary animate-in fade-in slide-in-from-bottom-4 duration-1000">
-              <Trophy className="mr-2 h-4 w-4 fill-primary text-primary" />
-              DMCC Prestige Tournament
+            <div className="hero-badge inline-flex items-center border bg-muted px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground rounded-none">
+              <Trophy className="mr-2 h-4 w-4 text-primary" />
+              Delhi Meetei Coordinating Committee
             </div>
 
             {/* Main Headline */}
-            <div className="space-y-2 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-              <h1 className="font-heading text-6xl font-black uppercase tracking-tight text-foreground md:text-7xl lg:text-8xl leading-none">
-                <span className="text-glow">Meira</span><br />
-                <span className="text-transparent bg-clip-text bg-gradient-primary">Chukhattpa</span>
+            <div className="space-y-2 md:space-y-4">
+              <h1 className="hero-title font-heading text-5xl font-extrabold tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl leading-[1.1]">
+                Meira <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">Chukhattpa</span>
               </h1>
-              <p className="text-xl md:text-2xl font-bold text-accent tracking-wide uppercase mt-4 text-glow-accent">
+              <p className="hero-title text-xl md:text-2xl font-semibold text-muted-foreground tracking-wide uppercase">
                 3rd Annual Sports Meet
               </p>
             </div>
 
             {/* Body Copy */}
-            <p className="text-lg font-medium leading-relaxed text-muted-foreground md:text-xl animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500 max-w-xl">
-              7-A Side Football excellence, cultural tradition, and community spirit forged in the heart of DMCC.
+            <p className="hero-desc text-base md:text-lg leading-relaxed text-muted-foreground max-w-xl">
+              Empowering our children through sport, celebrating Thabal Chongba, and uniting through 7-A Side Football.
             </p>
             
-            {/* Event Info */}
-            <div className="flex flex-col sm:flex-row gap-6 text-sm font-semibold text-foreground/80 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-600">
-              <div className="flex items-center justify-center lg:justify-start gap-2">
-                <Calendar className="w-5 h-5 text-primary" />
-                <span>March 2026 - May 2026</span>
-              </div>
-              <div className="flex items-center justify-center lg:justify-start gap-2">
-                <MapPin className="w-5 h-5 text-accent" />
-                <span>DMCC Grounds</span>
-              </div>
-            </div>
-
             {/* Call to Action */}
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto pt-6 animate-in fade-in slide-in-from-bottom-16 duration-1000 delay-700">
-              <Button asChild size="lg" className="h-14 px-8 text-base font-black uppercase tracking-[0.1em] rounded-full group bg-gradient-primary border-0 shadow-glow-primary text-white hover:scale-105 transition-all">
+            <div className="hero-buttons flex flex-col sm:flex-row gap-3 md:gap-4 w-full sm:w-auto pt-2">
+              <Button asChild size="lg" className="h-12 px-8 text-base">
                 <a href="#register">
                   Register Squad
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </a>
               </Button>
-              <Button asChild variant="outline" size="lg" className="h-14 px-8 text-base font-black uppercase tracking-[0.1em] rounded-full border-border/50 bg-white/5 hover:bg-white/10 backdrop-blur-md transition-colors text-foreground">
+              <Button asChild variant="outline" size="lg" className="h-12 px-8 text-base">
                 <a href="#events">View Events</a>
               </Button>
+            </div>
+
+            {/* Event Dashboard Cards */}
+            <div className="hero-info grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg pt-6 md:pt-8 mt-2 border-t border-border/50">
+              
+              {/* Date Card */}
+              <div className="flex flex-col p-4 rounded-none bg-muted/30 border shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="p-2 bg-background rounded-none shadow-sm border">
+                    <Calendar className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                  <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">When</span>
+                </div>
+                <div className="text-sm font-bold text-foreground">29 MARCH 2026</div>
+                <div className="text-xs font-medium text-muted-foreground mt-0.5">8:30 AM (SUNDAY)</div>
+              </div>
+
+              {/* Location Card */}
+              <a 
+                href="https://maps.app.goo.gl/6Su6sR1ntmqavd8g6" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group flex flex-col p-4 rounded-none bg-background border border-primary/20 shadow-md shadow-primary/5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 relative overflow-hidden"
+              >
+                <div className="absolute top-4 right-4 bg-primary/10 text-primary p-1.5 rounded-none opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300">
+                  <ArrowRight className="w-3 h-3" />
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="p-2 bg-primary/10 rounded-none">
+                    <MapPin className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="text-xs font-black uppercase tracking-widest text-primary">Where</span>
+                </div>
+                <div className="text-sm font-bold text-foreground">Bhaskaracharya College</div>
+                <div className="text-xs font-medium text-muted-foreground mt-0.5">Sector 2, Dwarka <span className="inline-block ml-1 opacity-70 group-hover:opacity-100 transition-opacity">— View Map</span></div>
+              </a>
             </div>
 
           </div>
           
           {/* Main Hero Illustration */}
-          <div className="relative w-full max-w-lg lg:max-w-xl xl:max-w-2xl animate-in zoom-in fade-in duration-1000 delay-300">
-            {/* Glowing backdrop for the illustration */}
-            <div className="absolute inset-0 bg-gradient-accent rounded-full opacity-20 blur-[80px]"></div>
-            <img 
-              src="/illustrations/hero.png" 
-              alt="Kids playing football and sports" 
-              className="relative z-10 w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:-translate-y-2 transition-transform duration-500 ease-in-out"
+          <div className="hero-image relative w-full max-w-sm md:max-w-lg lg:max-w-xl xl:max-w-2xl z-10">
+            <div className="absolute inset-0 bg-background/20 z-10" />
+            <motion.img 
+              animate={{ y: [0, -15, 0] }} 
+              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+              src="/illustrations/hero-section.png" 
+              alt="Football Match Action" 
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 rounded-none shadow-2xl shadow-primary/10 border"
             />
           </div>
           
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50 flex flex-col items-center gap-2">
-          <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground">Scroll</span>
-          <div className="h-12 w-[2px] bg-gradient-to-b from-primary to-transparent rounded-full" />
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-50 hidden md:flex flex-col items-center gap-2">
+          <motion.span 
+            animate={{ opacity: [0.3, 1, 0.3] }} 
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+            className="text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground"
+          >
+            Scroll
+          </motion.span>
+          <div className="h-8 w-px bg-muted-foreground" />
         </div>
       </section>
     </div>
