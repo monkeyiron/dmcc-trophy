@@ -6,6 +6,12 @@ import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 
+/** Organizer contact — update here if details change */
+const CONTACT = {
+  name: "Roberson Oinam",
+  phone: "+91 97179 21812",
+} as const;
+
 export default function Support() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -79,11 +85,11 @@ export default function Support() {
                 <div className="space-y-8">
                   <div className="flex flex-col">
                     <span className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">Official Contact</span>
-                    <span className="font-bold text-foreground tracking-tight text-xl">Roberson Oinam</span>
+                    <span className="font-bold text-foreground tracking-tight text-xl">{CONTACT.name}</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">Direct Network</span>
-                    <span className="font-heading font-black text-3xl md:text-4xl tracking-widest text-foreground truncate">+91 97179 21812</span>
+                    <span className="font-heading font-black text-3xl md:text-4xl tracking-widest text-foreground truncate">{CONTACT.phone}</span>
                   </div>
                 </div>
               </div>

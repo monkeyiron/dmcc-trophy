@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { Plus, Trash2, ArrowRight, ArrowLeft, AlertCircle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 // Polyfill for UUID generation on non-secure HTTP networks (mobile testing)
 function generateUUID() {
@@ -50,6 +50,7 @@ export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -198,8 +199,8 @@ export default function Register() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10" />
                 <motion.img 
                   initial={{ scale: 1 }}
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                  animate={!shouldReduceMotion ? { y: [0, -10, 0] } : { y: 0 }}
+                  transition={{ repeat: shouldReduceMotion ? 0 : Infinity, duration: 4, ease: "easeInOut" }}
                   src="/illustrations/register.png" 
                   alt="Registration Success" 
                   className="w-full h-full object-cover opacity-90 scale-105"

@@ -45,6 +45,7 @@ type Team = {
 export default function AdminDashboard() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [expandedTeam, setExpandedTeam] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -169,6 +170,7 @@ export default function AdminDashboard() {
 
   const fetchTeams = async () => {
     setLoading(true);
+    setFetchError(null);
     const { data: teamsData, error } = await supabase
       .from("teams")
       .select("*, players(*)")
@@ -176,6 +178,7 @@ export default function AdminDashboard() {
 
     if (error) {
       console.error("Error fetching teams:", error);
+      setFetchError("Failed to load teams. Please refresh.");
     } else {
       setTeams(teamsData || []);
     }
@@ -190,10 +193,13 @@ export default function AdminDashboard() {
   const handleDelete = async (teamId: string) => {
     if (!confirm("Are you sure you want to delete this team and all its players?")) return;
     setDeleting(teamId);
-    // Delete players first (FK constraint)
-    await supabase.from("players").delete().eq("team_id", teamId);
-    await supabase.from("teams").delete().eq("id", teamId);
-    setTeams((prev) => prev.filter((t) => t.id !== teamId));
+    // Delete relies on DB FK cascade; only one call needed
+    const { error } = await supabase.from("teams").delete().eq("id", teamId);
+    if (error) {
+      console.error("Delete failed:", error);
+    } else {
+      setTeams((prev) => prev.filter((t) => t.id !== teamId));
+    }
     setDeleting(null);
   };
 
@@ -287,6 +293,11 @@ export default function AdminDashboard() {
               <Loader2 className="w-6 h-6 animate-spin" />
               <span className="font-bold text-sm uppercase tracking-widest">Loading teams...</span>
             </div>
+          ) : fetchError ? (
+            <div role="alert" className="py-12 text-center border border-destructive/30 bg-destructive/5 text-destructive">
+              <p className="font-bold">{fetchError}</p>
+              <Button variant="outline" size="sm" className="mt-4" onClick={fetchTeams}>Retry</Button>
+            </div>
           ) : teams.length === 0 ? (
             <div className="py-24 text-center border-2 border-dashed text-muted-foreground">
               <Users className="w-12 h-12 mx-auto mb-4 opacity-30" />
@@ -302,7 +313,14 @@ export default function AdminDashboard() {
 
                 return (
                   <Card key={team.id} className="overflow-hidden">
-                    <CardHeader className="p-6 flex flex-row items-center justify-between gap-4 cursor-pointer bg-muted/30 hover:bg-muted/60 transition-colors" onClick={() => toggleExpand(team.id)}>
+                    <CardHeader
+                      className="p-6 flex flex-row items-center justify-between gap-4 cursor-pointer bg-muted/30 hover:bg-muted/60 transition-colors"
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={isExpanded}
+                      onClick={() => toggleExpand(team.id)}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleExpand(team.id); } }}
+                    >
                       <div className="flex items-center gap-5 min-w-0">
                         <span className="font-heading font-black text-4xl text-muted-foreground/30 select-none hidden md:block">
                           {String(idx + 1).padStart(2, "0")}

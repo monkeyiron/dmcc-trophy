@@ -9,6 +9,16 @@ export default function Home() {
   const container = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    // Respect user's motion preference
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      // Set all elements to their final visible state immediately
+      gsap.set([".hero-badge", ".hero-title", ".hero-desc", ".hero-info", ".hero-buttons", ".hero-image"], {
+        opacity: 1, y: 0, scale: 1,
+      });
+      return;
+    }
+
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
     // Choreograph the hero load timeline
