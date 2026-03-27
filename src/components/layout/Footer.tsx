@@ -34,7 +34,7 @@ export default function Footer() {
  
   <div className="py-6 border-t text-center text-xs text-muted-foreground">
   <p className="text-[10px] md:text-xs">
-  Brewed with coffee &amp; creativity &mdash; Meetei Club South X Team &copy; 2026
+  Brewed with coffee &amp; creativity &mdash; Meetei Club South X Team I &copy; DMCC 2026
   </p>
   </div>
  </footer>
