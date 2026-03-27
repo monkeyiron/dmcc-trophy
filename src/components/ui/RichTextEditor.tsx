@@ -56,6 +56,9 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="sm"
+          aria-label="Bold"
+          title="Bold"
+          aria-pressed={editor.isActive('bold')}
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={toggleClass(editor.isActive('bold'))}
         >
@@ -65,6 +68,9 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="sm"
+          aria-label="Italic"
+          title="Italic"
+          aria-pressed={editor.isActive('italic')}
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={toggleClass(editor.isActive('italic'))}
         >
@@ -74,6 +80,9 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="sm"
+          aria-label="Strikethrough"
+          title="Strikethrough"
+          aria-pressed={editor.isActive('strike')}
           onClick={() => editor.chain().focus().toggleStrike().run()}
           className={toggleClass(editor.isActive('strike'))}
         >
@@ -86,6 +95,9 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="sm"
+          aria-label="Bullet list"
+          title="Bullet list"
+          aria-pressed={editor.isActive('bulletList')}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={toggleClass(editor.isActive('bulletList'))}
         >
@@ -95,6 +107,9 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="sm"
+          aria-label="Ordered list"
+          title="Ordered list"
+          aria-pressed={editor.isActive('orderedList')}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={toggleClass(editor.isActive('orderedList'))}
         >
@@ -104,6 +119,9 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="sm"
+          aria-label="Blockquote"
+          title="Blockquote"
+          aria-pressed={editor.isActive('blockquote')}
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={toggleClass(editor.isActive('blockquote'))}
         >

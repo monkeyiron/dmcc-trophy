@@ -119,7 +119,7 @@ export default function Register() {
 
       if (teamError) {
         console.error("Team insert error:", teamError);
-        throw new Error(`Team registration failed: ${teamError.message}`);
+        throw new Error("Team registration failed. Please try again.");
       }
 
       const mainPlayers = data.players.map(p => ({
@@ -145,8 +145,11 @@ export default function Register() {
         if (playersError) {
           console.error("Players insert error:", playersError);
           // Rollback: delete the team we just inserted
-          await supabase.from('teams').delete().eq('id', teamId);
-          throw new Error(`Player registration failed: ${playersError.message}`);
+          const { error: rollbackError } = await supabase.from('teams').delete().eq('id', teamId);
+          if (rollbackError) {
+            console.error("Rollback failed — orphaned team:", teamId, rollbackError);
+          }
+          throw new Error("Player registration failed. Please try again.");
         }
       }
 
@@ -456,6 +459,9 @@ export default function Register() {
                     <AnimatePresence>
                       {submitError && (
                         <motion.div
+                          role="alert"
+                          aria-live="assertive"
+                          aria-atomic="true"
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}

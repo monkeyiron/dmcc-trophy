@@ -31,7 +31,14 @@ export default function Navbar() {
  {/* Mobile Actions */}
  <div className="flex md:hidden items-center space-x-2">
  <ThemeToggle />
- <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
+ <Button
+  variant="ghost"
+  size="icon"
+  aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+  aria-expanded={isOpen}
+  aria-controls="mobile-nav"
+  onClick={() => setIsOpen(!isOpen)}
+ >
  {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
  </Button>
  </div>
@@ -39,7 +46,7 @@ export default function Navbar() {
 
  {/* Mobile Nav */}
  {isOpen && (
- <div className="md:hidden border-b bg-background px-4 py-6 flex flex-col space-y-6 animate-in slide-in-from-top-2 absolute w-full top-16 left-0 shadow-md">
+ <div id="mobile-nav" className="md:hidden border-b bg-background px-4 py-6 flex flex-col space-y-6 animate-in slide-in-from-top-2 absolute w-full top-16 left-0 shadow-md">
  <a href="#events" onClick={() => setIsOpen(false)} className="text-lg font-medium text-foreground hover:text-primary transition-colors">Events</a>
  <a href="#support" onClick={() => setIsOpen(false)} className="text-lg font-medium text-foreground hover:text-primary transition-colors">Support</a>
  <Button asChild className="w-full h-12">

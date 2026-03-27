@@ -21,7 +21,7 @@ const dignitaries = [
   {
     name: "Dr. Seram Rojeshkumar",
     role: "Guest of Honour",
-    title: "Covenor, DMCC",
+    title: "Convener, DMCC",
   },
   {
     name: "Hijam Rajen",
